@@ -12,7 +12,8 @@ body {
     BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial;
   transition: background-color 0.4s ease, color 0.3s ease;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 /* ---------- DARK MODE BACKGROUND (STATIC, AUTH STYLE) ---------- */
