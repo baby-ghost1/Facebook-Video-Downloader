@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { isValidFacebookUrl } from "../utils/validators";
 import { fetchInfo, downloadByQuality } from "../services/api";
 import { toast } from "react-hot-toast";
@@ -41,7 +41,6 @@ const Home = () => {
   const [loading, setLoading] = useState(false);
   const [downloadStage, setDownloadStage] = useState(null);
   const [theme, setTheme] = useState(getInitialTheme);
-  const cardRef = useRef(null);
 
 
 
@@ -52,14 +51,6 @@ const Home = () => {
     localStorage.setItem("theme", theme);
   }, [theme]);
 
-//   useEffect(() => {
-//   if (info) {
-//     cardRef.current?.scrollIntoView({
-//       behavior: "smooth",
-//       block: "start",
-//     });
-//   }
-// }, [info]);
 
   const toggleTheme = () => {
     setTheme((p) => (p === "dark" ? "light" : "dark"));
@@ -308,6 +299,186 @@ export default Home;
 
 
 
+// import { useEffect, useState } from "react";
+// import { isValidFacebookUrl } from "../utils/validators";
+// import { fetchInfo, downloadByQuality } from "../services/api";
+// import { toast } from "react-hot-toast";
+// import Footer from "../components/Footer";
+// import Header from "../components/Header";
 
+// /* -------- Duration Formatter -------- */
+// const formatDuration = (seconds) => {
+//   if (!seconds || seconds <= 0) return "0:00";
+//   const t = Math.floor(seconds);
+//   const h = Math.floor(t / 3600);
+//   const m = Math.floor((t % 3600) / 60);
+//   const s = t % 60;
+//   return h > 0
+//     ? `${h}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`
+//     : `${m}:${s.toString().padStart(2, "0")}`;
+// };
 
+// /* -------- THEME INIT -------- */
+// const getInitialTheme = () => {
+//   const saved = localStorage.getItem("theme");
+//   if (saved === "light" || saved === "dark") return saved;
+//   return window.matchMedia("(prefers-color-scheme: dark)").matches
+//     ? "dark"
+//     : "light";
+// };
+
+// const Home = () => {
+//   const [url, setUrl] = useState("");
+//   const [info, setInfo] = useState(null);
+//   const [loading, setLoading] = useState(false);
+//   const [theme, setTheme] = useState(getInitialTheme);
+
+//   const isValid = isValidFacebookUrl(url);
+
+//   /* -------- APPLY THEME -------- */
+//   useEffect(() => {
+//     document.body.classList.remove("dark", "light");
+//     document.body.classList.add(theme);
+//     localStorage.setItem("theme", theme);
+//   }, [theme]);
+
+//   /* -------- SIMPLE ANALYTICS (SAFE) -------- */
+//   const track = (event) => {
+//     console.log("[analytics]", event);
+//     // future: window.gtag / plausible.track
+//   };
+
+//   /* -------- Fetch Metadata -------- */
+//   const fetchMeta = async () => {
+//     if (!isValid) {
+//       toast.error("Invalid Facebook URL");
+//       return;
+//     }
+//     try {
+//       setLoading(true);
+//       track("fetch_video");
+//       const data = await fetchInfo(url);
+//       setInfo(data);
+//       setUrl("");
+//       toast.success("Video ready");
+//     } catch {
+//       toast.error("Failed to fetch video info");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   /* -------- Download -------- */
+//   const download = async (quality) => {
+//     try {
+//       setLoading(true);
+//       track(`download_${quality}`);
+//       const res = await downloadByQuality(info.sourceUrl || "", quality);
+//       const blob = new Blob([res.data], { type: "video/mp4" });
+//       const link = document.createElement("a");
+//       link.href = URL.createObjectURL(blob);
+//       link.download = `facebook-${quality}.mp4`;
+//       link.click();
+//       toast.success("Download started");
+//     } catch {
+//       toast.error("Download failed");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const copyLink = (link) => {
+//     navigator.clipboard.writeText(link);
+//     toast.success("Link copied");
+//     track("copy_link");
+//   };
+
+//   return (
+//     <>
+//       <Header theme={theme} toggleTheme={() => setTheme(p => p === "dark" ? "light" : "dark")} />
+
+//       <div className="min-h-screen pt-24 px-4 flex justify-center">
+//         <div className="w-full max-w-xl rounded-2xl bg-white/10 backdrop-blur-xl border border-white/15 p-6">
+
+//           {/* TITLE */}
+//           <h1 className="text-2xl font-semibold text-center text-white mb-1">
+//             Facebook Video Downloader
+//           </h1>
+//           <p className="text-sm text-white/60 text-center mb-6">
+//             Paste Facebook video or reel link below
+//           </p>
+
+//           {/* INPUT ROW */}
+//           <div className="flex gap-2 flex-col sm:flex-row">
+//             <input
+//               value={url}
+//               onChange={(e) => setUrl(e.target.value)}
+//               onKeyDown={(e) => e.key === "Enter" && fetchMeta()}
+//               placeholder="https://www.facebook.com/..."
+//               className="flex-1 px-4 py-3 rounded-xl bg-black/40 text-white border border-white/10 outline-none"
+//             />
+//             <button
+//               onClick={fetchMeta}
+//               disabled={!isValid || loading}
+//               className="px-6 py-3 rounded-xl bg-blue-600 text-white disabled:opacity-50"
+//             >
+//               {loading ? "…" : "Download"}
+//             </button>
+//           </div>
+
+//           {/* EMPTY STATE */}
+//           {!info && !loading && (
+//             <div className="mt-10 text-center text-white/50 text-sm">
+//               Paste a Facebook video link above to get started.
+//             </div>
+//           )}
+
+//           {/* LOADING SKELETON */}
+//           {loading && !info && (
+//             <div className="mt-6 animate-pulse space-y-3">
+//               <div className="h-20 bg-white/10 rounded-lg" />
+//               <div className="h-4 bg-white/10 rounded w-2/3" />
+//             </div>
+//           )}
+
+//           {/* RESULT */}
+//           {info && (
+//             <div className="mt-6 space-y-3">
+//               <div className="flex gap-3 items-center">
+//                 <img src={info.thumbnail} className="w-32 h-20 object-contain bg-black/30 rounded" />
+//                 <div className="text-white/80 text-sm">
+//                   Facebook Video · {formatDuration(info.duration)}
+//                 </div>
+//               </div>
+
+//               {info.qualities.map((q) => (
+//                 <div key={q} className="flex justify-between items-center border border-white/10 rounded-lg px-4 py-3">
+//                   <span className="text-white text-sm">{q}</span>
+//                   <div className="flex gap-2">
+//                     <button
+//                       onClick={() => download(q)}
+//                       className="px-3 py-1.5 bg-green-600 text-white rounded"
+//                     >
+//                       Download
+//                     </button>
+//                     <button
+//                       onClick={() => copyLink(info.directLinks?.[q])}
+//                       className="px-3 py-1.5 bg-white/10 text-white rounded"
+//                     >
+//                       Copy
+//                     </button>
+//                   </div>
+//                 </div>
+//               ))}
+//             </div>
+//           )}
+
+//           <Footer />
+//         </div>
+//       </div>
+//     </>
+//   );
+// };
+
+// export default Home;
 
