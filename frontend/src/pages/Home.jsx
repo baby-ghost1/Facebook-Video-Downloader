@@ -123,7 +123,7 @@ const Home = () => {
             Facebook Video Downloader
           </h1>
 
-          <p className="text-sm text-white/60 text-center mb-6">
+          <p className="text-sm text-center mb-6">
             Paste Facebook video or reel link below
           </p>
 
@@ -176,9 +176,9 @@ const Home = () => {
                   />
                 </div>
 
-                <div className="text-sm text-white/80 truncate">
+                <div className="text-sm truncate">
                   <span className="font-medium">Facebook Video</span>
-                  <span className="text-white/50">
+                  <span>
                     {" "}
                     · {formatDuration(info.duration)}
                   </span>
@@ -188,8 +188,8 @@ const Home = () => {
               {/* PROGRESS */}
               {downloadStage && (
                 <div className="mb-4 px-3 py-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                  <div className="flex items-center gap-3 text-sm text-blue-300">
-                    <div className="w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+                  <div className="flex items-center gap-3 text-sm text-blue-800">
+                    <div className="w-4 h-4 border-2 border-blue-800 border-t-transparent rounded-full animate-spin"></div>
                     <span>{downloadStage}</span>
                   </div>
                 </div>
@@ -254,7 +254,7 @@ const Home = () => {
                             ? "720p (HD)"
                             : "360p (SD)"}
                       </span>
-                      <span className="text-white/50"> · No render</span>
+                      <span> · No render</span>
                     </div>
 
                     <button

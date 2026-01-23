@@ -3,18 +3,16 @@ const Footer = () => {
     <footer
       className="
         mt-10 text-center text-xs leading-relaxed
-        text-white/40
-        dark:text-white/40
-        light:text-slate-500
+        text-slate-600 dark:text-white/40
       "
     >
       {/* Made with */}
       <div className="font-medium">
-        Made with <span className="text-red-400">❤️</span> by Me
+        Made with <span className="text-red-500">❤️</span> by Me
       </div>
 
       {/* Year */}
-      <div className="mt-1">
+      <div className="mt-1 text-slate-500 dark:text-white/40">
         &copy; {new Date().getFullYear()}
       </div>
 
@@ -23,9 +21,7 @@ const Footer = () => {
         className="
           mt-3 max-w-md mx-auto
           text-[11px]
-          text-white/30
-          dark:text-white/30
-          light:text-slate-400
+          text-slate-500 dark:text-white/30
         "
       >
         Disclaimer: This tool is provided for personal and educational use only.
