@@ -39,3 +39,80 @@ body.light {
   background-size: 300% 300%;
   animation: gradient 6s ease infinite;
 }
+
+
+/* ---------------- HEART BEAT ---------------- */
+@keyframes heartbeat {
+  0% {
+    transform: scale(1);
+  }
+  14% {
+    transform: scale(1.25);
+  }
+  28% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.25);
+  }
+  70% {
+    transform: scale(1);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ---------------- CLICK PULSE ---------------- */
+@keyframes pulseBurst {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6);
+  }
+  70% {
+    transform: scale(1.6);
+    box-shadow: 0 0 0 12px rgba(239, 68, 68, 0);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* ---------------- HEART BASE ---------------- */
+.heart-icon {
+  display: inline-block;
+  cursor: pointer;
+  transform-origin: center;
+
+  animation-name: heartbeat;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+
+  filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.55));
+  transition: 
+    color 0.3s ease,
+    fill 0.3s ease,
+    transform 0.25s ease,
+    filter 0.25s ease;
+}
+
+/* ---------------- HOVER = FAST BEAT ---------------- */
+.heart-icon:hover {
+  animation-duration: 0.7s;
+  transform: scale(1.15);
+}
+
+/* ---------------- CLICK = BURST ---------------- */
+.heart-icon:active {
+  animation-name: pulseBurst;
+  animation-duration: 0.5s;
+  animation-iteration-count: 1;
+}
+
+/* ---------------- DARK MODE TUNING ---------------- */
+html.dark .heart-icon {
+  filter: drop-shadow(0 0 8px rgba(248, 113, 113, 0.65));
+}
+
+

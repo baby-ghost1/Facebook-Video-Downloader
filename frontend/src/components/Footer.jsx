@@ -1,3 +1,5 @@
+import { Heart } from "lucide-react";
+
 const Footer = () => {
   return (
     <footer
@@ -7,9 +9,18 @@ const Footer = () => {
       "
     >
       {/* Made with */}
-      <div className="font-medium">
-        Made with <span className="text-red-500">❤️</span> by Me
-      </div>
+      <div className="font-bold flex justify-center items-center gap-1 select-none leading-none">
+  Made with 
+  <Heart
+    className="
+      heart-icon
+      w-4.5 h-4.5
+      text-red-500 fill-red-500
+      dark:text-red-400 dark:fill-red-400
+    "
+  /> 
+  by Me
+</div>
 
       {/* Year */}
       <div className="mt-1 text-slate-500 dark:text-white/40">

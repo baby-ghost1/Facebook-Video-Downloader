@@ -1,6 +1,6 @@
 const Formats = () => {
   return (
-    <div className="max-w-3xl mx-auto pt-28 px-6 text-sm text-white/80">
+    <div className="max-w-3xl mx-auto pt-28 px-6 text-sm">
       <h1 className="text-2xl font-semibold mb-4">
         Supported Formats
       </h1>
