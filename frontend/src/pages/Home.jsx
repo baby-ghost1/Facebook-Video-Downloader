@@ -128,35 +128,36 @@ const Home = () => {
           </p>
 
           {/* INPUT + FETCH BUTTON */}
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <input
               type="text"
               placeholder="https://www.facebook.com/..."
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               className="
-      flex-1 px-4 py-3 rounded-xl
-      bg-black/40 text-white
-      placeholder:text-white/40
-      outline-none
-      border border-white/10
-      focus:border-blue-500
-      focus:ring-2 focus:ring-blue-500/40
-      transition
-    "
+                w-full sm:flex-1
+                px-4 py-3 rounded-xl
+                bg-black/40 text-white
+                placeholder:text-white/40
+                outline-none
+                border border-white/10
+                focus:border-blue-500
+                focus:ring-2 focus:ring-blue-500/40
+                transition
+                "
             />
 
             <button
               onClick={fetchMeta}
               disabled={!isValidFacebookUrl(url) || loading}
               className="
-      px-4.5 py-1.5 ml-1 rounded-xl font-medium
-      transition-all duration-200
-      bg-blue-600 hover:bg-blue-700
-      active:translate-y-0
-      disabled:bg-blue-600/40
-      disabled:cursor-not-allowed
-    "
+                w-full sm:w-auto
+                px-6 py-3 rounded-xl font-medium
+                transition-all duration-200
+                bg-blue-600 hover:bg-blue-700
+                disabled:bg-blue-600/40
+                disabled:cursor-not-allowed
+                "
             >
               {loading ? "Processing…" : "Download"}
             </button>
@@ -283,3 +284,7 @@ const Home = () => {
 };
 
 export default Home;
+
+
+
+

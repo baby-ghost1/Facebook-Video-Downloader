@@ -1,53 +1,3 @@
-// import { Sun, Moon, Menu } from "lucide-react";
-// import ThemeToggle from "./ThemeToggle";
-
-// const Header = ({ theme, toggleTheme }) => {
-//   return (
-//     <header
-//       className="
-//         w-full fixed top-0 left-0 z-50
-//         backdrop-blur bg-white/5
-//         border-b border-white/10
-//       "
-//     >
-//       <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-
-//         {/* LEFT: LOGO / BRAND */}
-//         <div
-//           className="
-//             text-xl font-extrabold tracking-tight
-//             font-[ui-rounded]
-//           "
-//         >
-//           Cliply
-//         </div>
-
-//         {/* RIGHT: MENU + THEME */}
-//         <div className="flex items-center gap-4">
-
-//           {/* Day / Night Toggle */}
-//           <ThemeToggle theme={theme} toggleTheme={toggleTheme} />
-
-//           {/* Hamburger (future use) */}
-//           <button
-//             className="
-//               w-9 h-9 rounded-lg
-//               flex items-center justify-center
-//               hover:bg-white/10
-//               transition
-//             "
-//           >
-//             <Menu size={24} />
-//           </button>
-
-//         </div>
-//       </div>
-//     </header>
-//   );
-// };
-
-// export default Header;
-
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
@@ -72,7 +22,29 @@ const Header = ({ theme, toggleTheme }) => {
       >
         <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           {/* BRAND */}
-          <div className="text-xl font-extrabold tracking-tight">Cliply</div>
+        {/* <div className="
+  text-2xl font-extrabold tracking-tight
+  bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500
+  bg-clip-text text-transparent
+  drop-shadow-[0_1px_8px_rgba(99,102,241,0.6)]
+">
+  Cliply.
+</div> */}
+
+
+{/* <div className="text-2xl font-extrabold tracking-tight 
+                text-white drop-shadow-[0_0_12px_rgba(59,130,246,0.6)]">
+  Cliply<span className="text-blue-400">.</span>
+</div> */}
+
+
+<div className="text-2xl font-extrabold tracking-tight 
+                bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 
+                bg-300% animate-gradient 
+                bg-clip-text text-transparent">
+  Cliply<span>.</span>
+</div>
+
 
           {/* RIGHT */}
           <div className="flex items-center gap-4">
