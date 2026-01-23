@@ -109,12 +109,11 @@ const Home = () => {
 
       <div className="min-h-screen pt-24 flex items-center justify-center px-4">
         <div
-          // ref={cardRef}
           className="
           w-full max-w-xl rounded-2xl
           bg-white/10 backdrop-blur-xl
           border border-white/15
-          shadow-[0_20px_50px_rgba(0,0,0,0.35)]
+          shadow-[0_0_30px_rgba(59,130,246,0.25),_0_0_50px_rgba(168,85,247,0.18)]
           p-6 transition-all
         "
         >
