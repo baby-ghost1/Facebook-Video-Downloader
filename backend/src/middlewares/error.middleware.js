@@ -1,8 +1,8 @@
-export const errorMiddleware = (err, req, res, next) => {
-  console.error("❌ Error:", err.message);
-
-  res.status(err.statusCode || 500).json({
+export const errorMiddleware = (err, _req, res, _next) => {
+  console.error("Error:", err.message);
+  const status = err.statusCode || 500;
+  res.status(status).json({
     success: false,
-    message: err.message || "Internal Server Error",
+    message: err.message || "Something went wrong.",
   });
 };

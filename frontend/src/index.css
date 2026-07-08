@@ -1,118 +1,261 @@
 @import "tailwindcss";
 
-html,
-body {
-  width: 100%;
-  height: 100%;
+:root {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-tertiary: #94a3b8;
+  --text-muted: #64748b;
+  --card-bg: rgba(255, 255, 255, 0.92);
+  --card-border: rgba(226, 232, 240, 0.9);
+  --card-hover: rgba(255, 255, 255, 0.98);
+  --input-bg: #f8fafc;
+  --input-border: #e2e8f0;
+  --input-focus: rgba(59, 130, 246, 0.4);
+  --primary: #2563eb;
+  --primary-light: #3b82f6;
+  --primary-glow: rgba(59, 130, 246, 0.15);
+  --primary-surface: rgba(59, 130, 246, 0.1);
+  --primary-gradient: linear-gradient(135deg, #2563eb, #3b82f6);
+  --primary-gradient-hover: linear-gradient(135deg, #3b82f6, #60a5fa);
+  --success: #16a34a;
+  --success-light: rgba(22, 163, 74, 0.1);
+  --warning: #d97706;
+  --warning-light: rgba(217, 119, 6, 0.1);
+  --danger: #dc2626;
+  --danger-light: rgba(220, 38, 38, 0.1);
+  --purple: #a855f7;
+  --purple-light: rgba(168, 85, 247, 0.1);
+  --indigo: #6366f1;
+  --indigo-light: rgba(99, 102, 241, 0.1);
+  --info: #3b82f6;
+  --info-light: rgba(59, 130, 246, 0.1);
+  --progress-track: #f1f5f9;
+  --progress-complete: linear-gradient(90deg, #34d399, #10b981);
+  --progress-merging: linear-gradient(90deg, #f59e0b, #d97706);
+  --progress-default: linear-gradient(90deg, #60a5fa, #3b82f6);
+  --glow-purple: rgba(168, 85, 247, 0.1);
+  --glow-indigo: rgba(99, 102, 241, 0.1);
+  --glow-blue: rgba(59, 130, 246, 0.1);
+  --glow-green: rgba(34, 197, 94, 0.1);
+  --glow-orange: rgba(249, 115, 22, 0.1);
+  --particle-color: rgba(59, 130, 246, 0.15);
+  --particle-line: rgba(59, 130, 246, 0.05);
+  --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 24px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 8px 40px rgba(15, 23, 42, 0.08);
+  --shadow-xl: 0 20px 60px rgba(15, 23, 42, 0.1);
+  --toast-bg: #ffffff;
+  --toast-color: #0f172a;
+  --toast-border: #e2e8f0;
+  --scrollbar-thumb: rgba(100, 116, 139, 0.2);
+  --scrollbar-hover: rgba(100, 116, 139, 0.4);
+  --shimmer: rgba(255, 255, 255, 0.08);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-2xl: 28px;
 }
 
+.dark {
+  --bg-primary: #07070a;
+  --bg-secondary: #0f0f14;
+  --bg-tertiary: #18181e;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  --text-muted: #475569;
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(255, 255, 255, 0.06);
+  --card-hover: rgba(255, 255, 255, 0.07);
+  --input-bg: rgba(255, 255, 255, 0.05);
+  --input-border: rgba(255, 255, 255, 0.1);
+  --input-focus: rgba(59, 130, 246, 0.3);
+  --primary: #60a5fa;
+  --primary-light: #3b82f6;
+  --primary-glow: rgba(59, 130, 246, 0.12);
+  --primary-surface: rgba(59, 130, 246, 0.1);
+  --primary-gradient: linear-gradient(135deg, #3b82f6, #60a5fa);
+  --primary-gradient-hover: linear-gradient(135deg, #60a5fa, #93c5fd);
+  --success: #22c55e;
+  --success-light: rgba(34, 197, 94, 0.1);
+  --warning: #fbbf24;
+  --warning-light: rgba(251, 191, 36, 0.1);
+  --danger: #f87171;
+  --danger-light: rgba(248, 113, 113, 0.1);
+  --purple: #c084fc;
+  --purple-light: rgba(192, 132, 252, 0.1);
+  --indigo: #818cf8;
+  --indigo-light: rgba(129, 140, 248, 0.1);
+  --info: #60a5fa;
+  --info-light: rgba(96, 165, 250, 0.1);
+  --progress-track: rgba(255, 255, 255, 0.05);
+  --progress-complete: linear-gradient(90deg, #34d399, #10b981);
+  --progress-merging: linear-gradient(90deg, #fbbf24, #f59e0b);
+  --progress-default: linear-gradient(90deg, #60a5fa, #3b82f6);
+  --glow-purple: rgba(168, 85, 247, 0.08);
+  --glow-indigo: rgba(99, 102, 241, 0.08);
+  --glow-blue: rgba(59, 130, 246, 0.08);
+  --glow-green: rgba(34, 197, 94, 0.08);
+  --glow-orange: rgba(249, 115, 22, 0.08);
+  --particle-color: rgba(255, 255, 255, 0.3);
+  --particle-line: rgba(255, 255, 255, 0.08);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 60px rgba(0, 0, 0, 0.5);
+  --toast-bg: #18181e;
+  --toast-color: #f1f5f9;
+  --toast-border: rgba(255, 255, 255, 0.08);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.08);
+  --scrollbar-hover: rgba(255, 255, 255, 0.15);
+  --shimmer: rgba(255, 255, 255, 0.03);
+}
+
+html, body { width: 100%; height: 100%; margin: 0; padding: 0; }
+
+*, *::before, *::after { box-sizing: border-box; }
+
 body {
-  font-family: ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial;
-  transition: background-color 0.4s ease, color 0.3s ease;
-  position: relative;
+  font-family: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  transition: background 0.5s ease, color 0.3s ease;
   overflow-x: hidden;
-  overflow-y: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* ---------- DARK MODE BACKGROUND (STATIC, AUTH STYLE) ---------- */
-body.dark {
-  color: #e5e7eb;
+.glass-card, .glass-card-strong {
+  transition: background 0.5s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -30;
   background:
-    linear-gradient(180deg, #0f1115, #0f1115);
+    radial-gradient(ellipse 80% 60% at 0% 20%, rgba(59, 130, 246, 0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 100% 40%, rgba(168, 85, 247, 0.03) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 40% at 50% 100%, rgba(6, 182, 212, 0.025) 0%, transparent 60%);
 }
 
-/* ---------- LIGHT MODE ---------- */
-body.light {
-  color: #2f3034;
+.dark body::before, body.dark::before {
   background:
-    linear-gradient(180deg, #f8fafc, #eef2ff);
+    radial-gradient(ellipse 80% 60% at 0% 20%, rgba(37, 99, 235, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 100% 40%, rgba(147, 51, 234, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 40% at 50% 100%, rgba(8, 145, 178, 0.04) 0%, transparent 60%);
 }
 
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(24px) saturate(1.1);
+  -webkit-backdrop-filter: blur(24px) saturate(1.1);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-md);
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
 
-@keyframes gradient {
+.glass-card:hover {
+  background: var(--card-hover);
+  box-shadow: var(--shadow-lg);
+}
+
+.glass-card-strong {
+  background: var(--card-hover);
+  backdrop-filter: blur(32px) saturate(1.2);
+  -webkit-backdrop-filter: blur(32px) saturate(1.2);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--shadow-lg);
+}
+
+.noise-overlay {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -10;
+  opacity: 0.35;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+}
+
+.dark .noise-overlay {
+  opacity: 0.2;
+  mix-blend-mode: soft-light;
+}
+
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 999px; }
+::-webkit-scrollbar-thumb:hover { background: var(--scrollbar-hover); }
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px var(--primary-glow); }
+  50% { box-shadow: 0 0 40px var(--primary-glow), 0 0 60px var(--primary-glow); }
+}
+
+@keyframes gradient-flow {
   0% { background-position: 0% 50%; }
   50% { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
 }
-.animate-gradient {
-  background-size: 300% 300%;
-  animation: gradient 6s ease infinite;
-}
 
-
-/* ---------------- HEART BEAT ---------------- */
 @keyframes heartbeat {
-  0% {
-    transform: scale(1);
-  }
-  14% {
-    transform: scale(1.25);
-  }
-  28% {
-    transform: scale(1);
-  }
-  42% {
-    transform: scale(1.25);
-  }
-  70% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(1);
-  }
+  0%, 100% { transform: scale(1); }
+  14% { transform: scale(1.2); }
+  28% { transform: scale(1); }
+  42% { transform: scale(1.2); }
+  70% { transform: scale(1); }
 }
 
-/* ---------------- CLICK PULSE ---------------- */
-@keyframes pulseBurst {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6);
-  }
-  70% {
-    transform: scale(1.6);
-    box-shadow: 0 0 0 12px rgba(239, 68, 68, 0);
-  }
-  100% {
-    transform: scale(1);
-  }
+.animate-shimmer {
+  background: linear-gradient(110deg, transparent 30%, var(--shimmer) 50%, transparent 70%);
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
 }
 
-/* ---------------- HEART BASE ---------------- */
-.heart-icon {
-  display: inline-block;
-  cursor: pointer;
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-flow 6s ease infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 3s ease-in-out infinite;
+}
+
+.heartbeat {
+  animation: heartbeat 1.5s ease-in-out infinite;
   transform-origin: center;
-
-  animation-name: heartbeat;
-  animation-duration: 1.5s;
-  animation-timing-function: ease-in-out;
-  animation-iteration-count: infinite;
-
-  filter: drop-shadow(0 0 6px rgba(239, 68, 68, 0.55));
-  transition: 
-    color 0.3s ease,
-    fill 0.3s ease,
-    transform 0.25s ease,
-    filter 0.25s ease;
 }
 
-/* ---------------- HOVER = FAST BEAT ---------------- */
-.heart-icon:hover {
-  animation-duration: 0.7s;
-  transform: scale(1.15);
+.animate-gradient-shift {
+  animation: gradient-shift 6s ease-in-out infinite;
 }
 
-/* ---------------- CLICK = BURST ---------------- */
-.heart-icon:active {
-  animation-name: pulseBurst;
-  animation-duration: 0.5s;
-  animation-iteration-count: 1;
-}
-
-/* ---------------- DARK MODE TUNING ---------------- */
-html.dark .heart-icon {
-  filter: drop-shadow(0 0 8px rgba(248, 113, 113, 0.65));
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 

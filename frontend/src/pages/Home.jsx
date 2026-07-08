@@ -1,289 +1,83 @@
-import { useEffect, useState } from "react";
-import { isValidFacebookUrl } from "../utils/validators";
-import { fetchInfo, downloadByQuality } from "../services/api";
-import { toast } from "react-hot-toast";
-import Footer from "../components/Footer";
-import Header from "../components/Header";
-
-/* -------- Duration Formatter -------- */
-const formatDuration = (seconds) => {
-  if (!seconds || seconds <= 0) return "0:00";
-
-  const total = Math.floor(seconds);
-  const hrs = Math.floor(total / 3600);
-  const mins = Math.floor((total % 3600) / 60);
-  const secs = total % 60;
-
-  if (hrs > 0) {
-    return `${hrs}:${mins.toString().padStart(2, "0")}:${secs
-      .toString()
-      .padStart(2, "0")}`;
-  }
-
-  return `${mins}:${secs.toString().padStart(2, "0")}`;
-};
-
-/* -------- THEME INIT -------- */
-const getInitialTheme = () => {
-  const saved = localStorage.getItem("theme");
-  if (saved === "light" || saved === "dark") return saved;
-
-  return window.matchMedia("(prefers-color-scheme: dark)").matches
-    ? "dark"
-    : "light";
-};
+import Layout from "../components/Layout";
+import DownloadForm from "../home/DownloadForm";
+import ResultCard from "../home/ResultCard";
+import ProgressBar from "../home/ProgressBar";
+import QualityList from "../home/QualityList";
+import { useDownloader } from "../hooks/useDownloader";
+import { AnimatePresence, motion } from "framer-motion";
 
 const Home = () => {
-  const [url, setUrl] = useState("");
-  const [info, setInfo] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [downloadStage, setDownloadStage] = useState(null);
-  const [theme, setTheme] = useState(getInitialTheme);
-
-  /* -------- APPLY THEME -------- */
-  useEffect(() => {
-    document.body.classList.remove("dark", "light");
-    document.body.classList.add(theme);
-    localStorage.setItem("theme", theme);
-  }, [theme]);
-
-  const toggleTheme = () => {
-    setTheme((p) => (p === "dark" ? "light" : "dark"));
-  };
-
-  /* -------- Fetch Metadata -------- */
-  const fetchMeta = async () => {
-    if (!isValidFacebookUrl(url)) {
-      toast.error("Invalid Facebook URL");
-      return;
-    }
-
-    try {
-      setLoading(true);
-      const data = await fetchInfo(url);
-      setInfo(data);
-      toast.success("Video ready");
-    } catch {
-      toast.error("Failed to fetch video info");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  /* -------- Download with Progress -------- */
-  const download = async (quality) => {
-    try {
-      setLoading(true);
-
-      setDownloadStage("Fetching streams…");
-      await new Promise((r) => setTimeout(r, 400));
-
-      setDownloadStage("Merging audio & video…");
-      await new Promise((r) => setTimeout(r, 600));
-
-      setDownloadStage("Preparing file…");
-      const res = await downloadByQuality(url, quality);
-
-      setDownloadStage("Starting download…");
-
-      const blob = new Blob([res.data], { type: "video/mp4" });
-      const link = document.createElement("a");
-      link.href = URL.createObjectURL(blob);
-      link.download = `facebook-${quality}.mp4`;
-      link.click();
-
-      setDownloadStage(null);
-      toast.success("Download started");
-    } catch {
-      setDownloadStage(null);
-      toast.error("Download failed");
-    } finally {
-      setLoading(false);
-    }
-  };
+  const {
+    url, setUrl, info, loading, downloadStage, downloadProgress,
+    platform, downloadingQuality, fetchMeta, download
+  } = useDownloader();
 
   return (
-    <>
-      {/* HEADER */}
-      <Header theme={theme} toggleTheme={toggleTheme} />
+    <Layout>
+      <div className="glass-card rounded-2xl p-6 md:p-8">
+        <DownloadForm
+          url={url}
+          setUrl={setUrl}
+          loading={loading && !downloadingQuality}
+          isDownloading={!!downloadingQuality}
+          fetchMeta={fetchMeta}
+          platform={platform}
+        />
 
-      <div className="min-h-screen pt-24 flex items-center justify-center px-4">
-        <div
-          className="
-          w-full max-w-xl rounded-2xl
-          bg-white/10 backdrop-blur-xl
-          border border-white/15
-          shadow-[0_0_30px_rgba(59,130,246,0.25),_0_0_50px_rgba(168,85,247,0.18)]
-          p-6 transition-all
-        "
-        >
-          {/* TITLE */}
-          <h1 className="text-2xl font-semibold text-center tracking-tight mb-1">
-            Facebook Video Downloader
-          </h1>
-
-          <p className="text-sm text-center mb-6">
-            Paste Facebook video or reel link below
-          </p>
-
-          {/* INPUT + FETCH BUTTON */}
-          <div className="flex flex-col sm:flex-row gap-2">
-            <input
-              type="text"
-              placeholder="https://www.facebook.com/..."
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              className="
-                w-full sm:flex-1
-                px-4 py-3 rounded-xl
-                bg-black/40 text-white
-                placeholder:text-white/40
-                outline-none
-                border border-white/10
-                focus:border-blue-500
-                focus:ring-2 focus:ring-blue-500/40
-                transition
-                "
-            />
-
-            <button
-              onClick={fetchMeta}
-              disabled={!isValidFacebookUrl(url) || loading}
-              className="
-                w-full sm:w-auto
-                px-6 py-3 rounded-xl font-medium
-                transition-all duration-200
-                bg-blue-600 hover:bg-blue-700
-                disabled:bg-blue-600/40
-                disabled:cursor-not-allowed
-                "
+        <AnimatePresence mode="wait">
+          {loading && !info && (
+            <motion.div
+              key="skeleton"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="mt-6 space-y-4"
             >
-              {loading ? "Processing…" : "Download"}
-            </button>
-          </div>
-
-          {/* RESULT */}
-          {info && (
-            <div className="mt-6 animate-[fadeIn_0.35s_ease-out]">
-              {/* THUMBNAIL + META */}
-              <div className="flex items-center gap-3 mb-4">
-                <div className="w-32 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-black/30">
-                  <img
-                    src={info.thumbnail}
-                    alt="thumbnail"
-                    className="w-full h-full object-contain"
-                  />
-                </div>
-
-                <div className="text-sm truncate">
-                  <span className="font-medium">Facebook Video</span>
-                  <span>
-                    {" "}
-                    · {formatDuration(info.duration)}
-                  </span>
-                </div>
-              </div>
-
-              {/* PROGRESS */}
-              {downloadStage && (
-                <div className="mb-4 px-3 py-2 rounded-lg bg-blue-500/10 border border-blue-500/20">
-                  <div className="flex items-center gap-3 text-sm text-blue-800">
-                    <div className="w-4 h-4 border-2 border-blue-800 border-t-transparent rounded-full animate-spin"></div>
-                    <span>{downloadStage}</span>
-                  </div>
-                </div>
-              )}
-
-              {/* DESKTOP TABLE */}
-              <div className="hidden md:block border border-white/10 rounded-lg overflow-hidden">
-                <div className="grid grid-cols-3 bg-white/10 text-sm font-semibold px-4 py-2">
-                  <div>Quality</div>
-                  <div>Render</div>
-                  <div className="text-right pr-6">Download</div>
-                </div>
-
-                {info.qualities.map((q) => (
-                  <div
-                    key={q}
-                    className="grid grid-cols-3 items-center px-4 py-3 border-t border-white/10 text-sm"
-                  >
-                    <div>
-                      {q === "Full HD"
-                        ? "1080p (Full HD)"
-                        : q === "HD"
-                          ? "720p (HD)"
-                          : "360p (SD)"}
+              <div className="rounded-2xl overflow-hidden border" style={{ borderColor: "var(--card-border)", background: "var(--card-bg)" }}>
+                <div className="flex flex-col sm:flex-row">
+                  <div className="sm:w-48 h-32 sm:h-44 animate-shimmer" style={{ background: "var(--bg-tertiary)" }} />
+                  <div className="flex-1 p-4 space-y-3">
+                    <div className="h-5 w-3/4 rounded-lg animate-shimmer" style={{ background: "var(--bg-tertiary)" }} />
+                    <div className="h-3 w-1/3 rounded-lg animate-shimmer" style={{ background: "var(--bg-tertiary)" }} />
+                    <div className="flex gap-3 mt-4">
+                      <div className="h-3 w-16 rounded-lg animate-shimmer" style={{ background: "var(--bg-tertiary)" }} />
+                      <div className="h-3 w-24 rounded-lg animate-shimmer" style={{ background: "var(--bg-tertiary)" }} />
                     </div>
-
-                    <div className="text-white/50">No</div>
-
-                    {/* RIGHT ALIGNED DOWNLOAD BUTTON */}
-                    <div className="flex justify-end pr-2">
-                      <button
-                        onClick={() => download(q)}
-                        disabled={loading}
-                        className="
-                        px-4 py-1.5 rounded-md
-                        bg-green-600 hover:bg-green-700
-                        transition-all
-                        hover:translate-y-[-1px]
-                        disabled:opacity-50
-                        disabled:cursor-not-allowed
-                      "
-                      >
-                        Download
-                      </button>
+                    <div className="flex gap-2 mt-3">
+                      <div className="h-5 w-14 rounded-md animate-shimmer" style={{ background: "var(--bg-tertiary)" }} />
+                      <div className="h-5 w-14 rounded-md animate-shimmer" style={{ background: "var(--bg-tertiary)" }} />
+                      <div className="h-5 w-14 rounded-md animate-shimmer" style={{ background: "var(--bg-tertiary)" }} />
                     </div>
                   </div>
-                ))}
+                </div>
               </div>
-
-              {/* MOBILE CARDS (unchanged) */}
-              <div className="md:hidden space-y-3">
-                {info.qualities.map((q) => (
-                  <div
-                    key={q}
-                    className="border border-white/10 rounded-lg p-4 bg-white/5"
-                  >
-                    <div className="text-sm mb-2">
-                      <span className="font-medium">
-                        {q === "Full HD"
-                          ? "1080p (Full HD)"
-                          : q === "HD"
-                            ? "720p (HD)"
-                            : "360p (SD)"}
-                      </span>
-                      <span> · No render</span>
-                    </div>
-
-                    <button
-                      onClick={() => download(q)}
-                      disabled={loading}
-                      className="
-                      w-full py-2 rounded-lg
-                      bg-green-600 hover:bg-green-700
-                      transition-all
-                      hover:translate-y-[-1px]
-                      disabled:opacity-50
-                      disabled:cursor-not-allowed
-                    "
-                    >
-                      Download
-                    </button>
-                  </div>
-                ))}
-              </div>
-            </div>
+            </motion.div>
           )}
-          <Footer />
-        </div>
+          {info && (
+            <motion.div
+              key="result"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="mt-6 space-y-4"
+            >
+              <ResultCard info={info} platform={platform} />
+              <ProgressBar stage={downloadStage} percent={downloadProgress} />
+              <QualityList
+                qualities={info.qualities}
+                loading={loading}
+                download={download}
+                platform={platform}
+                downloadingQuality={downloadingQuality}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </>
+    </Layout>
   );
 };
 
 export default Home;
-
-
-
-

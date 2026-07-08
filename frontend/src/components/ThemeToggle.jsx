@@ -1,57 +1,34 @@
 import { Sun, Moon } from "lucide-react";
+import { motion } from "framer-motion";
 
 const ThemeToggle = ({ theme, toggleTheme }) => {
   const isDark = theme === "dark";
 
   return (
-    <button
+    <motion.button
       onClick={toggleTheme}
-      className={`
-        h-8.5 rounded-full
-        flex items-center
-        transition-all duration-300 ease-in-out
-        cursor-pointer
-        bg-gray-300 dark:bg-black
-        hover:bg-gray-400 dark:hover:bg-zinc-800
-        ${isDark ? "pl-3 pr-1.99999" : "pl-1.999999999 pr-3"}
-      `}
+      whileTap={{ scale: 0.9 }}
+      whileHover={{ scale: 1.05 }}
+      className="relative w-9 h-9 rounded-xl flex items-center justify-center cursor-pointer transition-all duration-300"
+      style={{
+        background: isDark ? "var(--primary-surface)" : "rgba(234,179,8,0.12)",
+        border: "1px solid var(--card-border)",
+      }}
     >
-      {/* CONTENT WRAPPER */}
-      <div
-        className={`
-          flex items-center gap-1.5
-          transition-all duration-300
-          ${isDark ? "flex-row-reverse" : "flex-row"}
-        `}
+      <motion.div
+        key={isDark ? "moon" : "sun"}
+        initial={{ rotate: -90, opacity: 0, scale: 0.5 }}
+        animate={{ rotate: 0, opacity: 1, scale: 1 }}
+        exit={{ rotate: 90, opacity: 0, scale: 0.5 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
       >
-        {/* ICON */}
-        <div
-          className="
-            w-7.5 h-7.5 rounded-full
-            bg-white
-            shadow-md
-            flex items-center justify-center
-          "
-        >
-          {isDark ? (
-            <Moon size={16} className="text-black" />
-          ) : (
-            <Sun size={16} className="text-yellow-500" />
-          )}
-        </div>
-
-        {/* TEXT */}
-        <span
-          className="
-            text-xs font-semibold tracking-wide
-            text-black dark:text-white
-            select-none whitespace-nowrap
-          "
-        >
-          {isDark ? "DARK MODE" : "LIGHT MODE"}
-        </span>
-      </div>
-    </button>
+        {isDark ? (
+          <Moon size={16} className="text-[var(--primary)]" />
+        ) : (
+          <Sun size={16} className="text-[var(--warning)]" />
+        )}
+      </motion.div>
+    </motion.button>
   );
 };
 

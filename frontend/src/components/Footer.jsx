@@ -2,44 +2,18 @@ import { Heart } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer
-      className="
-        mt-10 text-center text-xs leading-relaxed
-        text-slate-600 dark:text-white/40
-      "
-    >
-      {/* Made with */}
-      <div className="font-bold flex justify-center items-center gap-1 select-none leading-none">
-  Made with 
-  <Heart
-    className="
-      heart-icon
-      w-4.5 h-4.5
-      text-red-500 fill-red-500
-      dark:text-red-400 dark:fill-red-400
-    "
-  /> 
-  by Me
-</div>
-
-      {/* Year */}
-      <div className="mt-1 text-slate-500 dark:text-white/40">
-        &copy; {new Date().getFullYear()}
+    <footer className="mt-16 pb-8 text-center">
+      <div className="flex items-center justify-center gap-1.5 text-sm text-[var(--text-tertiary)]">
+        <span>Made with</span>
+        <Heart className="heartbeat w-4 h-4 text-[var(--danger)]" style={{ fill: "var(--danger-light)" }} />
+        <span>by <span className="font-semibold text-[var(--text-secondary)]">Cliply</span></span>
       </div>
-
-      {/* Disclaimer */}
-      <div
-        className="
-          mt-3 max-w-md mx-auto
-          text-[11px]
-          text-slate-500 dark:text-white/30
-        "
-      >
-        Disclaimer: This tool is provided for personal and educational use only.
-        The developer does not host, store, or claim ownership of any downloaded
-        media. All rights to the content belong to their respective copyright
-        owners. Users are responsible for ensuring that their use of downloaded
-        content complies with applicable laws and platform policies.
+      <div className="mt-1 text-xs text-[var(--text-tertiary)]">
+        &copy; {new Date().getFullYear()} Cliply &middot; v2.0.0
+      </div>
+      <div className="mt-4 max-w-xl mx-auto text-[11px] leading-relaxed text-[var(--text-tertiary)] opacity-50">
+        This tool is for personal and educational use only. No media is stored or hosted.
+        Users must comply with applicable laws and platform terms.
       </div>
     </footer>
   );
