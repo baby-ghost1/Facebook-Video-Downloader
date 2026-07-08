@@ -67,6 +67,48 @@ const findYtDlp = () => {
 const YTDLP_PATH = findYtDlp();
 console.log(`[Cliply] Using yt-dlp: ${YTDLP_PATH}`);
 
+const findDeno = () => {
+  const isWin = process.platform === "win32";
+  const homeDir = process.env.USERPROFILE || process.env.HOME || "";
+  const candidates = isWin
+    ? [
+        path.join(homeDir, ".deno", "bin", "deno.exe"),
+        "C:\\Users\\prata\\.deno\\bin\\deno.exe",
+      ]
+    : [
+        path.join(homeDir, ".deno", "bin", "deno"),
+        "/usr/local/bin/deno",
+        "/home/" + (process.env.USER || "") + "/.deno/bin/deno",
+      ];
+
+  for (const c of candidates) {
+    if (fs.existsSync(c)) return path.dirname(c);
+  }
+
+  try {
+    const cmd = isWin ? "where.exe deno" : "which deno";
+    const result = execSync(cmd, { encoding: "utf-8", stdio: "pipe" }).trim();
+    const firstLine = result.split("\n")[0].trim();
+    if (firstLine && fs.existsSync(firstLine)) return path.dirname(firstLine);
+  } catch {}
+
+  return null;
+};
+
+const DENO_DIR = findDeno();
+if (DENO_DIR) {
+  console.log(`[Cliply] Using deno dir: ${DENO_DIR}`);
+} else {
+  console.log("[Cliply] deno not found - YouTube quality may be limited. Install: https://deno.land/#installation");
+}
+
+const SPAWN_ENV = {
+  ...process.env,
+  PATH: DENO_DIR
+    ? `${DENO_DIR}${process.platform === "win32" ? ";" : ":"}${process.env.PATH || ""}`
+    : process.env.PATH || "",
+};
+
 const COOKIES_FILE = path.join(DOWNLOAD_DIR, "cookies.txt");
 const COOKIES_PLATFORMS = new Set([
   "instagram", "facebook", "tiktok", "youtube",
@@ -121,7 +163,7 @@ const buildArgs = (extraArgs, tailArgs) => {
 
 const runYtDlp = (args) => {
   return new Promise((resolve, reject) => {
-    const proc = spawn(YTDLP_PATH, args, { windowsHide: true });
+    const proc = spawn(YTDLP_PATH, args, { windowsHide: true, env: SPAWN_ENV });
 
     let stdout = "";
     let stderr = "";
@@ -297,7 +339,7 @@ export const downloadAndMergeByQuality = async (url, quality, onProgress) => {
 
 const runDownload = (args, finalFile, onProgress) => {
   return new Promise((resolve, reject) => {
-    const proc = spawn(YTDLP_PATH, args, { windowsHide: true });
+    const proc = spawn(YTDLP_PATH, args, { windowsHide: true, env: SPAWN_ENV });
     let stderr = "";
 
     proc.stderr.on("data", (chunk) => {

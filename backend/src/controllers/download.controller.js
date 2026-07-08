@@ -95,19 +95,27 @@ function parseYtDlpError(err, platform) {
   if (stderr.includes("Private video") || msg.includes("Private video"))
     return "This is a private video. Cannot download private content.";
   if (stderr.includes("Sign in") || msg.includes("Sign in"))
-    return `This ${platform || "platform"} content requires login.`;
+    return `This ${platform || "platform"} content requires login. Log into ${platform || "the site"} in Chrome or Edge, then try again.`;
+  if (stderr.includes("No video could be found") || msg.includes("No video could be found"))
+    return "No video found in this post. The post may contain only images or text.";
   if (stderr.includes("HTTP Error 403") || msg.includes("403"))
-    return "Access denied by the platform.";
+    return "Access denied by the platform. The content may be restricted.";
   if (stderr.includes("HTTP Error 404") || msg.includes("404"))
-    return "Video not found. Check the URL.";
+    return "Content not found. Check the URL or it may have been deleted.";
   if (stderr.includes("Unsupported URL") || msg.includes("Unsupported URL"))
     return `URL not supported for ${platform || "this platform"}.`;
   if (stderr.includes("geoblocked") || msg.includes("geoblocked"))
-    return "This content is geoblocked.";
+    return "This content is geoblocked in your region.";
+  if (stderr.includes("Connection timed out") || msg.includes("Connection timed out"))
+    return "Connection timed out. The site may be blocked in your region or currently unavailable.";
   if (stderr.includes("login") || msg.includes("login"))
-    return "This content requires login.";
+    return `This ${platform || "platform"} content requires login. Log into ${platform || "the site"} in Chrome or Edge, then try again.`;
   if (stderr.includes("cookies") || stderr.includes("cookie"))
     return `${platform || "This platform"} requires login. Log into ${platform || "the site"} in Chrome or Edge, then try again.`;
+  if (stderr.includes("does not exist") || msg.includes("does not exist"))
+    return "This content does not exist or has been removed.";
+  if (stderr.includes("no longer available") || msg.includes("no longer available"))
+    return "This content is no longer available.";
 
   return `Failed: ${stderr.slice(0, 200) || msg.slice(0, 200)}`.trim();
 }
